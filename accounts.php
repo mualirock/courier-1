@@ -126,7 +126,7 @@ include 'dbConn.php';
                                                             <td><?php echo htmlspecialchars($row['RECEIVED_AMOUNT'] ?? ''); ?></td>
                                                             <td><?php echo htmlspecialchars($row['COMMISSION_AMOUNT'] ?? ''); ?></td>
                                                             <td><?php echo htmlspecialchars($row['ADMIN_OUTSTANDING_AMOUNT'] ?? ''); ?></td>
-                                                            <td><?php echo htmlspecialchars($row['PAID_AMOUNT'] ?? ''); ?></td>
+                                                            <td><?php echo htmlspecialchars($row['REQUESTED_AMOUNT'] ?? ''); ?></td>
                                                             <td>
                                                                 <a href="javascript:void(0);" onclick="approvel(this)" data-id="<?php echo $row['BRANCH_ACCOUNT_ID']; ?>">
                                                                     <i class="fa fa-check text-success"></i>
@@ -403,7 +403,7 @@ include 'dbConn.php';
                 success: function(response) {
                     console.log("Response from server:", response);
                     if (response.toString().startsWith("Update Successful")) {
-                        alert('✔️ Approverl Successfully!');
+                        alert('✔️ Amount updated Successfully!');
                         window.location.reload();
                     } else {
                         alert('❌ Approvel Error: ' + response);

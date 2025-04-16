@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
             COMMISSION_AMOUNT = '$COMMISSION_AMOUNT',
             ADMIN_OUTSTANDING_AMOUNT = '$ADMIN_OUTSTANDING_AMOUNT',
             PAYMENT_TYPE = '$PAYMENT_TYPE',
-            PAID_AMOUNT = '$PAID_AMOUNT',
+            REQUESTED_AMOUNT = '$PAID_AMOUNT',
             NOTES = '$NOTES',
             IS_REQUEST = 1
         WHERE BRANCH_ACCOUNT_ID = '$BRANCH_ACCOUNT_ID'
@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
     if (mysqli_query($conn, $update)) {
 
         $insert = "
-            INSERT INTO transactions (BOOKING_ID, REQUEST_AMOUNT, PAYMENT_TYPE, NOTES, STATUS)
+            INSERT INTO transactions (BRANCH_ACCOUNT_ID, REQUEST_AMOUNT, PAYMENT_TYPE, NOTES, STATUS)
             VALUES ('$BRANCH_ACCOUNT_ID', '$PAID_AMOUNT', '$PAYMENT_TYPE', '$NOTES', 0)
         ";
 
@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Edit Branch Account</title>
+    <title>Zenith</title>
     <!-- Your CSS and other header elements -->
 </head>
 
@@ -168,13 +168,14 @@ if (isset($_POST['submit'])) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="ADMIN_OUTSTANDING_AMOUNT">Admin Outstanding Amount</label>
-                                                            <input type="number" class="form-control" id="ADMIN_OUTSTANDING_AMOUNT" name="ADMIN_OUTSTANDING_AMOUNT" step="0.01" min="0"
+                                                            <input type="number" class="form-control" id="ADMIN_OUTSTANDING_AMOUNT" name="ADMIN_OUTSTANDING_AMOUNT" step="0.01"
                                                                 value="<?php
                                                                         if (isset($row['ADMIN_OUTSTANDING_AMOUNT'])) {
                                                                             // Remove any special characters except numbers and decimal point
                                                                             $cleanAmount = preg_replace('/[^0-9.]/', '', $row['ADMIN_OUTSTANDING_AMOUNT']);
                                                                             // Cast to float and ensure it's non-negative
-                                                                            echo floatval($cleanAmount) >= 0 ? $cleanAmount : '0';
+                                                                            // echo floatval($cleanAmount) >= 0 ? $cleanAmount : '0';
+                                                                            echo $row['ADMIN_OUTSTANDING_AMOUNT'];
                                                                         } else {
                                                                             echo '0';
                                                                         }
@@ -258,9 +259,10 @@ if (isset($_POST['submit'])) {
 
         document.getElementById('PAID_AMOUNT').addEventListener('input', function() {
             const paid = parseFloat(this.value) || 0;
-            const adminOutstanding = Math.max(0, parseFloat(document.getElementById('ADMIN_OUTSTANDING_AMOUNT').value) || 0);
+            // const adminOutstanding = Math.max(0, parseFloat(document.getElementById('ADMIN_OUTSTANDING_AMOUNT').value) || 0);
+            const adminOutstanding = parseFloat(document.getElementById('ADMIN_OUTSTANDING_AMOUNT').value);
 
-            if (paid > adminOutstanding) {
+            if (adminOutstanding > 0 && paid > adminOutstanding) {
                 alert("❌ Paid Amount cannot be greater than Admin Outstanding Amount.");
                 this.value = '';
             }

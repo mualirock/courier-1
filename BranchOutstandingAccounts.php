@@ -1,6 +1,3 @@
-<?php
-include 'dbConn.php';
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,7 +64,7 @@ include 'dbConn.php';
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-between align-items-center">
                                             <div class="flex-grow-1 text-center">
-                                                <h2 class="m-t-p5 mb-0 mb-5">BRANCH ACCOUNT</h2>
+                                                <h2 class="m-t-p5 mb-0 mb-5">OUTSTANDING ACCOUNT</h2>
                                             </div>
                                         </div>
                                     </div>
@@ -91,7 +88,9 @@ include 'dbConn.php';
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $query = "SELECT * FROM v_branch_accounts WHERE BALANCE > 0 ORDER BY MONTH DESC";
+                                                include 'dbConn.php';
+
+                                                $query = "SELECT * FROM v_branch_accounts WHERE BALANCE < 0 ORDER BY MONTH DESC";
                                                 $result = mysqli_query($conn, $query);
 
                                                 // Initialize sum variables
@@ -124,20 +123,20 @@ include 'dbConn.php';
                                                         if ($month && $year && $branchId) {
                                                             $date = DateTime::createFromFormat('!m', $month);
                                                             echo '
-                                                            <a href="#" data-toggle="modal" data-target="#branchModal" 
-                                                                data-month="' . htmlspecialchars($month) . '" 
-                                                                data-year="' . htmlspecialchars($year) . '" 
-                                                                data-branch="' . htmlspecialchars($branchId) . '"
-                                                                data-branchname="' . htmlspecialchars($row['BRANCH_NAME'] ?? '') . '"
-                                                                data-mobile="' . htmlspecialchars($row['BRANCH_MOBILE'] ?? '') . '"
-                                                                data-altmobile="' . htmlspecialchars($row['ALTERNATIVE_MOBILE'] ?? '') . '"
-                                                                data-place="' . htmlspecialchars($row['PLACE'] ?? '') . '"
-                                                                data-username="' . htmlspecialchars($row['USER_NAME'] ?? '') . '"
-                                                                data-password="' . htmlspecialchars($row['PASSWORD'] ?? '') . '"
-                                                                data-paidcommission="' . htmlspecialchars($row['PAID_COMMISSION'] ?? '') . '"
-                                                                data-topaidcommission="' . htmlspecialchars($row['TOPAID_COMMISSION'] ?? '') . '"
-                                                                data-address="' . htmlspecialchars($row['ADDRESS'] ?? '') . '"
-                                                                data-totalexpense="' . htmlspecialchars($row['TOTAL_EXPENSE_AMOUNT'] ?? '') . '">';
+                    <a href="#" data-toggle="modal" data-target="#branchModal" 
+                        data-month="' . htmlspecialchars($month) . '" 
+                        data-year="' . htmlspecialchars($year) . '" 
+                        data-branch="' . htmlspecialchars($branchId) . '"
+                        data-branchname="' . htmlspecialchars($row['BRANCH_NAME'] ?? '') . '"
+                        data-mobile="' . htmlspecialchars($row['BRANCH_MOBILE'] ?? '') . '"
+                        data-altmobile="' . htmlspecialchars($row['ALTERNATIVE_MOBILE'] ?? '') . '"
+                        data-place="' . htmlspecialchars($row['PLACE'] ?? '') . '"
+                        data-username="' . htmlspecialchars($row['USER_NAME'] ?? '') . '"
+                        data-password="' . htmlspecialchars($row['PASSWORD'] ?? '') . '"
+                        data-paidcommission="' . htmlspecialchars($row['PAID_COMMISSION'] ?? '') . '"
+                        data-topaidcommission="' . htmlspecialchars($row['TOPAID_COMMISSION'] ?? '') . '"
+                        data-address="' . htmlspecialchars($row['ADDRESS'] ?? '') . '"
+                        data-totalexpense="' . htmlspecialchars($row['TOTAL_EXPENSE_AMOUNT'] ?? '') . '">';
                                                             echo htmlspecialchars($date->format('M') . '-' . $year);
                                                             echo '</a>';
                                                         }
