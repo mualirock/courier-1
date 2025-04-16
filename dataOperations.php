@@ -525,16 +525,17 @@ if (isset($_POST['deleteItem'])) {
 // }
 
 //Approvel
-if(isset($_POST['approvel'])){
-    $branchAccountId =$_POST['branchAccountID'];
+if (isset($_POST['approvel'])) {
+    $branchAccountId = $_POST['branchAccountID'];
 
-    $data = array(
-        "IS_REQUEST" => 0
-    );
-    echo $dbOperator->updateData("branch_account", $data, ["BRANCH_ACCOUNT_ID" => $branchAccountId]);
+    $sql = "UPDATE branch_account SET 
+            PAID_AMOUNT = PAID_AMOUNT + REQUESTED_AMOUNT,
+            REQUESTED_AMOUNT = '0',
+            IS_REQUEST = 0
+        WHERE BRANCH_ACCOUNT_ID = '$branchAccountId'";
 
-
-
+    mysqli_query($conn, $sql);
+    echo "Update Successful";
 }
 
 //Cancel
